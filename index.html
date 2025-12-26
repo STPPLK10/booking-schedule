@@ -3,8 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ตารางคิวว่าง</title>
+  <title>ตารางคิวงาน N (26-31 ธ.ค.)</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+
   <style>
+    :root {
+      --primary: #6366f1;
+      --jin-color: #0ea5e9; /* Sky Blue */
+      --jin-bg: #e0f2fe;
+      --ten-color: #8b5cf6; /* Violet */
+      --ten-bg: #ede9fe;
+      --couple-color: #f59e0b; /* Amber */
+      --couple-bg: #fffbeb;
+      --available-text: #059669;
+      --available-bg: #d1fae5;
+      --full-text: #e11d48;
+      --full-bg: #ffe4e6;
+      --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --hover-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+    }
+
     * {
       margin: 0;
       padding: 0;
@@ -12,33 +33,38 @@
     }
     
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Prompt', sans-serif;
+      /* พื้นหลังพาสเทลสดใสแต่สบายตา */
+      background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
       padding: 20px;
       min-height: 100vh;
+      color: #334155;
     }
     
     .container {
-      max-width: 1400px;
+      max-width: 1000px;
       margin: 0 auto;
-      background: white;
-      border-radius: 20px;
-      padding: 30px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     }
     
     h1 {
       text-align: center;
-      color: #667eea;
-      margin-bottom: 10px;
-      font-size: 2em;
+      color: #1e293b;
+      margin-bottom: 5px;
+      font-size: 1.8em;
+      font-weight: 600;
     }
     
     .subtitle {
       text-align: center;
-      color: #666;
+      color: #64748b;
       margin-bottom: 30px;
-      font-size: 0.95em;
+      font-size: 1em;
+      font-weight: 300;
     }
     
     .schedule-grid {
@@ -47,679 +73,431 @@
       margin-bottom: 30px;
     }
     
-    .dual-person-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-top: 15px;
-    }
-    
-    @media (max-width: 968px) {
-      .dual-person-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    
     .day-card {
-      background: #f8f9ff;
-      border-radius: 15px;
+      background: #fff;
+      border-radius: 16px;
       padding: 20px;
-      border: 2px solid #e0e7ff;
-      transition: all 0.3s ease;
-    }
-    
-    .day-card.couple-work {
-      border: 3px solid #f59e0b;
-      background: #fffbeb;
+      border: 1px solid #f1f5f9;
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
     
     .day-card:hover {
-      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.2);
+      box-shadow: var(--hover-shadow);
       transform: translateY(-2px);
+    }
+
+    .day-card.couple-work {
+      border: 2px solid #fcd34d;
+      background: linear-gradient(to bottom right, #fff, #fffbeb);
     }
     
     .day-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       padding-bottom: 10px;
-      border-bottom: 2px solid #667eea;
+      border-bottom: 1px dashed #cbd5e1;
     }
     
-    .day-header.couple {
-      border-bottom: 2px solid #f59e0b;
+    .day-info {
+      display: flex;
+      flex-direction: column;
     }
-    
+
     .day-name {
-      font-size: 1.3em;
-      font-weight: bold;
-      color: #667eea;
+      font-size: 1.4em;
+      font-weight: 600;
+      color: #1e293b;
     }
     
     .day-date {
       font-size: 0.9em;
-      color: #888;
+      color: #94a3b8;
     }
     
     .couple-badge {
-      background: #f59e0b;
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
+      background: var(--couple-bg);
+      color: var(--couple-color);
+      padding: 6px 16px;
+      border-radius: 50px;
       font-size: 0.85em;
-      font-weight: bold;
+      font-weight: 600;
+      border: 1px solid #fcd34d;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    /* Grid Layout for People */
+    .dual-person-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
     }
     
-    .person-section {
-      background: white;
-      border-radius: 12px;
-      padding: 15px;
-      border: 2px solid #e0e7ff;
-    }
-    
-    .person-section.jin {
-      border-color: #3b82f6;
-    }
-    
-    .person-section.ten {
-      border-color: #8b5cf6;
+    @media (max-width: 768px) {
+      .dual-person-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+      .container { padding: 20px; }
+      .legend { flex-direction: column; gap: 10px; }
     }
     
     .person-header {
-      display: inline-block;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-weight: bold;
-      margin-bottom: 15px;
-      font-size: 1em;
-      width: 100%;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px;
+      border-radius: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 0.95em;
     }
     
-    .person-header.jin {
-      background: #3b82f6;
-      color: white;
-    }
-    
-    .person-header.ten {
-      background: #8b5cf6;
-      color: white;
-    }
+    .person-header.jin { background: var(--jin-bg); color: var(--jin-color); }
+    .person-header.ten { background: var(--ten-bg); color: var(--ten-color); }
     
     .time-slots {
       display: grid;
-      gap: 10px;
+      gap: 8px;
     }
     
     .time-slot {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 15px;
+      padding: 10px 14px;
       border-radius: 10px;
-      background: white;
-      border: 2px solid #e0e7ff;
+      background: #f8fafc;
+      border: 1px solid transparent;
       transition: all 0.2s ease;
     }
     
-    .time-slot.editable {
-      cursor: pointer;
+    .time-slot:hover {
+      background: #fff;
+      border-color: #e2e8f0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
-    
-    .time-slot.editable:hover {
-      border-color: #667eea;
-      background: #f8f9ff;
-      transform: translateX(2px);
-    }
+
+    .time-slot.editable { cursor: pointer; }
+    .time-slot.editable:hover { border-color: var(--primary); }
     
     .time-label {
-      font-weight: 600;
-      color: #333;
+      font-size: 0.9em;
+      font-weight: 500;
+      color: #475569;
     }
     
+    /* Pill Status Style */
     .status {
-      padding: 5px 15px;
+      padding: 4px 12px;
       border-radius: 20px;
-      font-size: 0.9em;
+      font-size: 0.8em;
       font-weight: 600;
+      letter-spacing: 0.3px;
     }
     
     .status.available {
-      background: #10b981;
-      color: white;
+      background: var(--available-bg);
+      color: var(--available-text);
     }
     
     .status.full {
-      background: #ef4444;
-      color: white;
+      background: var(--full-bg);
+      color: var(--full-text);
+      opacity: 0.8;
     }
     
-    .copy-btn {
-      padding: 6px 12px;
-      background: #667eea;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 600;
-    }
-    
+    /* Buttons */
     .copy-all-btn {
-      padding: 12px 30px;
-      background: #10b981;
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
       color: white;
       border: none;
-      border-radius: 10px;
-      font-size: 1.1em;
+      border-radius: 50px;
+      font-size: 1em;
+      font-family: 'Prompt', sans-serif;
+      font-weight: 500;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-weight: 600;
-      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     
     .copy-all-btn:hover {
-      background: #059669;
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
     }
     
-    .copy-all-btn.copied {
-      background: #3b82f6;
-    }
-    
-    .copy-btn:hover {
-      background: #5568d3;
-      transform: scale(1.05);
-    }
-    
-    .copy-btn.copied {
-      background: #10b981;
-    }
-    
-    .legend {
-      display: flex;
-      justify-content: center;
-      gap: 30px;
-      padding: 20px;
-      background: #f8f9ff;
-      border-radius: 10px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-    
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .legend-color {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-    }
-    
-    .note {
-      text-align: center;
-      color: #666;
-      font-size: 0.9em;
-      margin-top: 20px;
-      padding: 15px;
-      background: #e0e7ff;
-      border-radius: 10px;
-      border: 1px solid #667eea;
-    }
-    
-    .admin-section {
-      margin-top: 30px;
-      padding: 20px;
-      background: #fff3cd;
-      border-radius: 10px;
-      border: 2px solid #ffc107;
-    }
-    
-    .admin-section h3 {
-      color: #856404;
-      margin-bottom: 15px;
-      text-align: center;
-    }
-    
-    .admin-controls {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    
-    .admin-btn {
-      padding: 10px 20px;
-      background: #667eea;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 0.95em;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      font-weight: 600;
-    }
-    
-    .admin-btn:hover {
-      background: #5568d3;
-      transform: translateY(-1px);
-    }
-    
-    .admin-btn.toggle {
-      background: #8b5cf6;
-    }
-    
-    .admin-btn.toggle:hover {
-      background: #7c3aed;
-    }
-    
+    .copy-all-btn.copied { background: #10b981; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3); }
+
     .unlock-btn {
-      padding: 8px 20px;
-      background: #e5e7eb;
-      color: #6b7280;
-      border: 2px solid #d1d5db;
-      border-radius: 20px;
+      padding: 8px 24px;
+      background: transparent;
+      color: #94a3b8;
+      border: 1px solid #cbd5e1;
+      border-radius: 50px;
+      font-family: 'Prompt', sans-serif;
       font-size: 0.85em;
       cursor: pointer;
       transition: all 0.2s ease;
-      font-weight: 600;
     }
     
-    .unlock-btn:hover {
-      background: #d1d5db;
-      border-color: #9ca3af;
+    .unlock-btn:hover { color: #64748b; border-color: #94a3b8; background: #f8fafc; }
+    .unlock-btn.unlocked { color: #f59e0b; border-color: #f59e0b; background: #fffbeb; }
+
+    /* Legend & Note */
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 30px;
+      flex-wrap: wrap;
     }
     
-    .unlock-btn.unlocked {
-      background: #fef3c7;
-      color: #92400e;
-      border-color: #fbbf24;
-    }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 0.9em; color: #475569; }
+    .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
     
-    .unlock-btn.unlocked:hover {
-      background: #fde68a;
+    .note {
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85em;
+      margin-top: 25px;
+      padding: 15px;
+      background: #f8fafc;
+      border-radius: 12px;
+      border: 1px dashed #cbd5e1;
     }
-    
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-      
-      h1 {
-        font-size: 1.5em;
-      }
-      
-      .legend {
-        flex-direction: column;
-        gap: 15px;
-      }
+
+    /* Admin Copy Button (Small) */
+    .copy-btn {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: none;
+      background: #e2e8f0;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8em;
+      transition: all 0.2s;
     }
+    .copy-btn:hover { background: #cbd5e1; }
+    .copy-btn.copied { background: #10b981; color: white; }
+
+    .admin-section {
+        display: none; /* Hide by default */
+        margin-top: 20px;
+    }
+
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>📅 ตารางคิวว่างรับงาน</h1>
+    <h1>🗓️ ตารางคิวว่าง</h1>
     <p class="subtitle">26 - 31 ธันวาคม 2025</p>
     
-    <div style="text-align: center; margin-bottom: 20px;">
-      <button id="copyAllBtn" class="copy-all-btn">📋 คัดลอกลิงก์ตารางนี้</button>
+    <div style="text-align: center; margin-bottom: 30px;">
+      <button id="copyAllBtn" class="copy-all-btn">
+        <span>🔗</span> คัดลอกลิงก์ตารางนี้
+      </button>
     </div>
     
     <div class="schedule-grid" id="scheduleGrid"></div>
     
     <div class="legend">
-      <div class="legend-item">
-        <div class="legend-color" style="background: #10b981;"></div>
-        <span><strong>ว่าง</strong></span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background: #ef4444;"></div>
-        <span><strong>เต็ม</strong></span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background: #3b82f6;"></div>
-        <span><strong>จิณ</strong></span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background: #8b5cf6;"></div>
-        <span><strong>เท็น</strong></span>
-      </div>
-      <div class="legend-item">
-        <div class="legend-color" style="background: #f59e0b;"></div>
-        <span><strong>งานคู่</strong></span>
-      </div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--available-text);"></div>ว่าง</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--full-text);"></div>เต็ม</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--jin-color);"></div>จิณ</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--ten-color);"></div>เท็น</div>
+      <div class="legend-item"><div class="legend-dot" style="background: var(--couple-color);"></div>งานคู่</div>
     </div>
     
     <div class="note">
-      💡 <strong>หมายเหตุ:</strong> Airbnb = เวลา 20.00-09.00 | วันที่ 30-31 ธ.ค. เป็นงานคู่
+      💡 <strong>Note:</strong> Airbnb เริ่ม 20.00-09.00 | วันที่ 30-31 ธ.ค. รับเฉพาะงานคู่
     </div>
 
-    <div style="text-align: center; margin-top: 30px;">
-      <button id="unlockBtn" class="unlock-btn" onclick="toggleEditMode()">🔓 ปลดล็อกเพื่อแก้ไข</button>
+    <div style="text-align: center; margin-top: 40px;">
+      <button id="unlockBtn" class="unlock-btn" onclick="toggleEditMode()">🔒 ปลดล็อกเพื่อแก้ไขสถานะ</button>
     </div>
+
+    <div id="adminSection" class="admin-section"></div>
   </div>
 
   <script>
+    // --- Data Configuration (Updated Dates) ---
     const scheduleData = {
       '2025-12-26': {
-        day: 'ศุกร์',
+        day: 'วันศุกร์',
         date: '26 ธ.ค.',
         isCouple: false,
-        jin: {
-          'Airbnb (20:00-09:00)': false,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        },
-        ten: {
-          'Airbnb (20:00-09:00)': false,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        }
+        jin: { 'Airbnb (20:00-09:00)': false, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true },
+        ten: { 'Airbnb (20:00-09:00)': false, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true }
       },
       '2025-12-27': {
-        day: 'เสาร์',
+        day: 'วันเสาร์',
         date: '27 ธ.ค.',
         isCouple: false,
-        jin: {
-          'Airbnb (20:00-09:00)': false,
-          '10:00-13:00': false,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        },
-        ten: {
-          'Airbnb (20:00-09:00)': false,
-          '10:00-13:00': false,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        }
+        jin: { 'Airbnb (20:00-09:00)': false, '10:00-13:00': false, '14:00-17:00': true, '18:00-20:30': true },
+        ten: { 'Airbnb (20:00-09:00)': false, '10:00-13:00': false, '14:00-17:00': true, '18:00-20:30': true }
       },
       '2025-12-28': {
-        day: 'อาทิตย์',
+        day: 'วันอาทิตย์',
         date: '28 ธ.ค.',
         isCouple: false,
-        jin: {
-          'Airbnb (20:00-09:00)': false,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        },
-        ten: {
-          'Airbnb (20:00-09:00)': false,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        }
+        jin: { 'Airbnb (20:00-09:00)': false, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true },
+        ten: { 'Airbnb (20:00-09:00)': false, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true }
       },
       '2025-12-29': {
-        day: 'จันทร์',
+        day: 'วันจันทร์',
         date: '29 ธ.ค.',
         isCouple: false,
-        jin: {
-          'Airbnb (20:00-09:00)': true,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        },
-        ten: {
-          'Airbnb (20:00-09:00)': true,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        }
+        jin: { 'Airbnb (20:00-09:00)': true, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true },
+        ten: { 'Airbnb (20:00-09:00)': true, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true }
       },
       '2025-12-30': {
-        day: 'จันทร์',
+        day: 'วันอังคาร', // แก้ไขวันถูกต้อง
         date: '30 ธ.ค.',
         isCouple: true,
-        slots: {
-          'Airbnb (20:00-09:00)': true,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        }
+        slots: { 'Airbnb (20:00-09:00)': true, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true }
       },
       '2025-12-31': {
-        day: 'อังคาร',
+        day: 'วันพุธ', // แก้ไขวันถูกต้อง
         date: '31 ธ.ค.',
         isCouple: true,
-        slots: {
-          'Airbnb (20:00-09:00)': true,
-          '10:00-13:00': true,
-          '14:00-17:00': true,
-          '18:00-20:30': true
-        }
+        slots: { 'Airbnb (20:00-09:00)': true, '10:00-13:00': true, '14:00-17:00': true, '18:00-20:30': true }
       }
     };
 
-    const slotMapping = [
-      'Airbnb (20:00-09:00)',
-      '10:00-13:00',
-      '14:00-17:00',
-      '18:00-20:30'
-    ];
+    const slotMapping = ['Airbnb (20:00-09:00)', '10:00-13:00', '14:00-17:00', '18:00-20:30'];
+
+    // --- Logic Functions ---
 
     function parseURLParameters() {
       const params = new URLSearchParams(window.location.search);
-      
-      // ถ้ามี state parameter (รูปแบบใหม่)
       if (params.has('state')) {
         const hex = params.get('state');
-        
-        // แปลง hex กลับเป็น binary string
         let binary = '';
         for (let i = 0; i < hex.length; i++) {
-          const bin = parseInt(hex[i], 16).toString(2).padStart(4, '0');
-          binary += bin;
+          binary += parseInt(hex[i], 16).toString(2).padStart(4, '0');
         }
-        
-        // อ่านข้อมูลกลับไปใส่ใน scheduleData
         let index = 0;
         Object.keys(scheduleData).forEach(dateKey => {
           const dayData = scheduleData[dateKey];
-          
           if (dayData.isCouple) {
             Object.keys(dayData.slots).forEach(timeSlot => {
-              if (index < binary.length) {
-                dayData.slots[timeSlot] = binary[index] === '1';
-                index++;
-              }
+              if (index < binary.length) { dayData.slots[timeSlot] = binary[index] === '1'; index++; }
             });
           } else {
             ['jin', 'ten'].forEach(person => {
               Object.keys(dayData[person]).forEach(timeSlot => {
-                if (index < binary.length) {
-                  dayData[person][timeSlot] = binary[index] === '1';
-                  index++;
-                }
+                if (index < binary.length) { dayData[person][timeSlot] = binary[index] === '1'; index++; }
               });
             });
           }
         });
-        
         return [];
       }
-      
-      // รูปแบบเก่า (d, p, s, v)
-      const updates = [];
-      const dates = params.getAll('d');
-      const persons = params.getAll('p');
-      const slots = params.getAll('s');
-      const values = params.getAll('v');
-      
-      for (let i = 0; i < dates.length; i++) {
-        if (dates[i] && slots[i] !== undefined && values[i] !== undefined) {
-          const year = '20' + dates[i].substring(0, 2);
-          const month = dates[i].substring(2, 4);
-          const day = dates[i].substring(4, 6);
-          const fullDate = `${year}-${month}-${day}`;
-          
-          const personMap = { 'j': 'jin', 't': 'ten' };
-          
-          updates.push({
-            date: fullDate,
-            person: personMap[persons[i]] || null,
-            slot: parseInt(slots[i]),
-            status: parseInt(values[i]) === 1
-          });
-        }
-      }
-      
-      return updates;
+      return []; // Ignore legacy format for cleanliness
     }
 
     function generateShortLink(dateKey, person, slotIndex, currentStatus) {
-      const baseUrl = window.location.origin + window.location.pathname;
-      const dateShort = dateKey.substring(2).replace(/-/g, '');
-      const personShort = person === 'jin' ? 'j' : (person === 'ten' ? 't' : '');
-      const newStatus = currentStatus ? 0 : 1;
-      
-      let params = `d=${dateShort}`;
-      if (personShort) params += `&p=${personShort}`;
-      params += `&s=${slotIndex}&v=${newStatus}`;
-      
-      return `${baseUrl}?${params}`;
+      // Legacy support for single slot link if needed, but UI uses Copy All mostly
+      return window.location.href; 
     }
 
     function generateFullScheduleLink() {
       const baseUrl = window.location.origin + window.location.pathname;
-      
-      // สร้างข้อมูลแบบย่อ: แต่ละวันเป็น string ของ 0 และ 1
       let encoded = '';
-      
       Object.keys(scheduleData).forEach(dateKey => {
         const dayData = scheduleData[dateKey];
-        
         if (dayData.isCouple) {
-          // งานคู่: 4 ตัวเลข (4 slots)
-          Object.keys(dayData.slots).forEach(timeSlot => {
-            encoded += dayData.slots[timeSlot] ? '1' : '0';
-          });
+          Object.keys(dayData.slots).forEach(s => encoded += dayData.slots[s] ? '1' : '0');
         } else {
-          // แยกคน: จิณ 4 ตัว + เท็น 4 ตัว = 8 ตัวเลข
-          ['jin', 'ten'].forEach(person => {
-            Object.keys(dayData[person]).forEach(timeSlot => {
-              encoded += dayData[person][timeSlot] ? '1' : '0';
-            });
+          ['jin', 'ten'].forEach(p => {
+            Object.keys(dayData[p]).forEach(s => encoded += dayData[p][s] ? '1' : '0');
           });
         }
       });
-      
-      // แปลง binary string เป็น hex เพื่อให้สั้นลง
       let hex = '';
       for (let i = 0; i < encoded.length; i += 4) {
-        const chunk = encoded.substr(i, 4);
-        hex += parseInt(chunk, 2).toString(16);
+        hex += parseInt(encoded.substr(i, 4), 2).toString(16);
       }
-      
       return `${baseUrl}?state=${hex}`;
     }
 
     function copyFullSchedule() {
       const link = generateFullScheduleLink();
       const btn = document.getElementById('copyAllBtn');
-      
       navigator.clipboard.writeText(link).then(() => {
-        const originalText = btn.textContent;
-        btn.textContent = '✓ คัดลอกแล้ว!';
+        btn.innerHTML = '<span>✓</span> คัดลอกแล้ว!';
         btn.classList.add('copied');
-        
         setTimeout(() => {
-          btn.textContent = originalText;
+          btn.innerHTML = '<span>🔗</span> คัดลอกลิงก์ตารางนี้';
           btn.classList.remove('copied');
         }, 2000);
-      }).catch(err => {
-        alert('ไม่สามารถคัดลอกได้: ' + err);
       });
     }
 
-    let adminMode = false;
     let editMode = false;
+    let adminMode = false; // Hidden feature via URL ?admin=true
 
     function toggleEditMode() {
       editMode = !editMode;
       const btn = document.getElementById('unlockBtn');
-      
       if (editMode) {
-        btn.textContent = '🔒 ล็อกการแก้ไข';
+        btn.innerHTML = '🔓 กำลังแก้ไข (คลิกที่เวลาเพื่อเปลี่ยนสถานะ)';
         btn.classList.add('unlocked');
       } else {
-        btn.textContent = '🔓 ปลดล็อกเพื่อแก้ไข';
+        btn.innerHTML = '🔒 ปลดล็อกเพื่อแก้ไขสถานะ';
         btn.classList.remove('unlocked');
       }
-      
       renderSchedule();
     }
 
     function toggleSlotStatus(dateKey, person, timeSlot) {
       if (!editMode) return;
-      
       const dayData = scheduleData[dateKey];
-      
       if (dayData.isCouple) {
         dayData.slots[timeSlot] = !dayData.slots[timeSlot];
       } else {
         dayData[person][timeSlot] = !dayData[person][timeSlot];
       }
-      
-      renderSchedule();
-    }
-
-    function toggleAdminMode() {
-      adminMode = !adminMode;
-      document.getElementById('adminSection').style.display = adminMode ? 'block' : 'none';
       renderSchedule();
     }
 
     function checkAdminMode() {
       const params = new URLSearchParams(window.location.search);
-      if (params.has('admin')) {
-        adminMode = true;
-        document.getElementById('adminSection').style.display = 'block';
-      }
+      if (params.has('admin')) adminMode = true;
     }
 
-    function copyLink(link, button) {
-      navigator.clipboard.writeText(link).then(() => {
-        button.textContent = '✓';
-        button.classList.add('copied');
+    function renderTimeSlot(timeSlot, isAvailable, dateKey, person) {
+        const slotDiv = document.createElement('div');
+        slotDiv.className = 'time-slot' + (editMode ? ' editable' : '');
         
-        setTimeout(() => {
-          button.textContent = '📋';
-          button.classList.remove('copied');
-        }, 2000);
-      }).catch(err => {
-        alert('ไม่สามารถคัดลอกได้: ' + err);
-      });
-    }
-
-    function applyUpdates(updates) {
-      updates.forEach(update => {
-        const { date, person, slot, status } = update;
-        
-        if (scheduleData[date]) {
-          const slotName = slotMapping[slot];
-          
-          if (scheduleData[date].isCouple) {
-            if (scheduleData[date].slots[slotName] !== undefined) {
-              scheduleData[date].slots[slotName] = status;
-            }
-          } else {
-            if (person === 'jin' && scheduleData[date].jin[slotName] !== undefined) {
-              scheduleData[date].jin[slotName] = status;
-            } else if (person === 'ten' && scheduleData[date].ten[slotName] !== undefined) {
-              scheduleData[date].ten[slotName] = status;
-            }
-          }
+        if (editMode) {
+            slotDiv.onclick = () => toggleSlotStatus(dateKey, person, timeSlot);
         }
-      });
+
+        const timeLabel = document.createElement('span');
+        timeLabel.className = 'time-label';
+        timeLabel.textContent = timeSlot;
+
+        const statusSpan = document.createElement('span');
+        statusSpan.className = `status ${isAvailable ? 'available' : 'full'}`;
+        statusSpan.textContent = isAvailable ? 'ว่าง' : 'เต็ม';
+
+        slotDiv.appendChild(timeLabel);
+        slotDiv.appendChild(statusSpan);
+        return slotDiv;
     }
 
     function renderSchedule() {
@@ -728,149 +506,66 @@
       
       Object.keys(scheduleData).forEach(dateKey => {
         const dayData = scheduleData[dateKey];
-        
         const dayCard = document.createElement('div');
         dayCard.className = 'day-card' + (dayData.isCouple ? ' couple-work' : '');
         
+        // Header
         const dayHeader = document.createElement('div');
-        dayHeader.className = 'day-header' + (dayData.isCouple ? ' couple' : '');
-        dayHeader.innerHTML = `
-          <span class="day-name">${dayData.day}</span>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            ${dayData.isCouple ? '<span class="couple-badge">งานคู่</span>' : ''}
-            <span class="day-date">${dayData.date}</span>
-          </div>
-        `;
+        dayHeader.className = 'day-header';
         
-        dayCard.appendChild(dayHeader);
+        const infoDiv = document.createElement('div');
+        infoDiv.className = 'day-info';
+        infoDiv.innerHTML = `<span class="day-name">${dayData.day}</span><span class="day-date">${dayData.date}</span>`;
+        
+        dayHeader.appendChild(infoDiv);
         
         if (dayData.isCouple) {
-          const timeSlots = document.createElement('div');
-          timeSlots.className = 'time-slots';
-          
-          Object.keys(dayData.slots).forEach(timeSlot => {
-            const slotDiv = document.createElement('div');
-            slotDiv.className = 'time-slot' + (editMode ? ' editable' : '');
-            
-            const isAvailable = dayData.slots[timeSlot];
-            const slotIndex = Object.keys(dayData.slots).indexOf(timeSlot);
-            const link = generateShortLink(dateKey, null, slotIndex, isAvailable);
-            
-            if (editMode) {
-              slotDiv.onclick = function() { toggleSlotStatus(dateKey, null, timeSlot); };
-            }
-            
-            const timeLabel = document.createElement('span');
-            timeLabel.className = 'time-label';
-            timeLabel.textContent = timeSlot;
-            
-            const statusSpan = document.createElement('span');
-            statusSpan.className = `status ${isAvailable ? 'available' : 'full'}`;
-            statusSpan.textContent = isAvailable ? 'ว่าง' : 'เต็ม';
-            
-            if (adminMode) {
-              const statusWrapper = document.createElement('div');
-              statusWrapper.style.cssText = 'display: flex; align-items: center; gap: 8px;';
-              
-              const copyBtn = document.createElement('button');
-              copyBtn.className = 'copy-btn';
-              copyBtn.textContent = '📋';
-              copyBtn.onclick = function(e) { 
-                e.stopPropagation();
-                copyLink(link, this); 
-              };
-              
-              statusWrapper.appendChild(statusSpan);
-              statusWrapper.appendChild(copyBtn);
-              slotDiv.appendChild(timeLabel);
-              slotDiv.appendChild(statusWrapper);
-            } else {
-              slotDiv.appendChild(timeLabel);
-              slotDiv.appendChild(statusSpan);
-            }
-            
-            timeSlots.appendChild(slotDiv);
-          });
-          
-          dayCard.appendChild(timeSlots);
-        } else {
-          const dualGrid = document.createElement('div');
-          dualGrid.className = 'dual-person-grid';
-          
-          ['jin', 'ten'].forEach(person => {
-            const personSection = document.createElement('div');
-            personSection.className = `person-section ${person}`;
-            
-            const personHeader = document.createElement('div');
-            personHeader.className = `person-header ${person}`;
-            personHeader.textContent = person === 'jin' ? '👤 จิณ' : '👤 เท็น';
-            personSection.appendChild(personHeader);
-            
-            const timeSlots = document.createElement('div');
-            timeSlots.className = 'time-slots';
-            
-            Object.keys(dayData[person]).forEach(timeSlot => {
-              const slotDiv = document.createElement('div');
-              slotDiv.className = 'time-slot' + (editMode ? ' editable' : '');
-              
-              const isAvailable = dayData[person][timeSlot];
-              const slotIndex = Object.keys(dayData[person]).indexOf(timeSlot);
-              const link = generateShortLink(dateKey, person, slotIndex, isAvailable);
-              
-              if (editMode) {
-                slotDiv.onclick = function() { toggleSlotStatus(dateKey, person, timeSlot); };
-              }
-              
-              const timeLabel = document.createElement('span');
-              timeLabel.className = 'time-label';
-              timeLabel.textContent = timeSlot;
-              
-              const statusSpan = document.createElement('span');
-              statusSpan.className = `status ${isAvailable ? 'available' : 'full'}`;
-              statusSpan.textContent = isAvailable ? 'ว่าง' : 'เต็ม';
-              
-              if (adminMode) {
-                const statusWrapper = document.createElement('div');
-                statusWrapper.style.cssText = 'display: flex; align-items: center; gap: 8px;';
-                
-                const copyBtn = document.createElement('button');
-                copyBtn.className = 'copy-btn';
-                copyBtn.textContent = '📋';
-                copyBtn.onclick = function(e) { 
-                  e.stopPropagation();
-                  copyLink(link, this); 
-                };
-                
-                statusWrapper.appendChild(statusSpan);
-                statusWrapper.appendChild(copyBtn);
-                slotDiv.appendChild(timeLabel);
-                slotDiv.appendChild(statusWrapper);
-              } else {
-                slotDiv.appendChild(timeLabel);
-                slotDiv.appendChild(statusSpan);
-              }
-              
-              timeSlots.appendChild(slotDiv);
-            });
-            
-            personSection.appendChild(timeSlots);
-            dualGrid.appendChild(personSection);
-          });
-          
-          dayCard.appendChild(dualGrid);
+            const badge = document.createElement('div');
+            badge.className = 'couple-badge';
+            badge.innerHTML = '<span>✨</span> งานคู่';
+            dayHeader.appendChild(badge);
         }
-        
+        dayCard.appendChild(dayHeader);
+
+        // Body
+        if (dayData.isCouple) {
+            const timeSlotsDiv = document.createElement('div');
+            timeSlotsDiv.className = 'time-slots';
+            Object.keys(dayData.slots).forEach(slot => {
+                timeSlotsDiv.appendChild(renderTimeSlot(slot, dayData.slots[slot], dateKey, null));
+            });
+            dayCard.appendChild(timeSlotsDiv);
+        } else {
+            const dualGrid = document.createElement('div');
+            dualGrid.className = 'dual-person-grid';
+            
+            ['jin', 'ten'].forEach(person => {
+                const col = document.createElement('div');
+                
+                const pHeader = document.createElement('div');
+                pHeader.className = `person-header ${person}`;
+                pHeader.innerHTML = person === 'jin' ? '☁️ จิณ' : '🦄 เท็น';
+                col.appendChild(pHeader);
+
+                const timeSlotsDiv = document.createElement('div');
+                timeSlotsDiv.className = 'time-slots';
+                Object.keys(dayData[person]).forEach(slot => {
+                    timeSlotsDiv.appendChild(renderTimeSlot(slot, dayData[person][slot], dateKey, person));
+                });
+                col.appendChild(timeSlotsDiv);
+                dualGrid.appendChild(col);
+            });
+            dayCard.appendChild(dualGrid);
+        }
+
         grid.appendChild(dayCard);
       });
     }
 
-    const updates = parseURLParameters();
-    if (updates.length > 0) {
-      applyUpdates(updates);
-    }
-    
+    // Init
+    checkAdminMode();
+    parseURLParameters();
     renderSchedule();
-    
     document.getElementById('copyAllBtn').addEventListener('click', copyFullSchedule);
   </script>
 </body>
