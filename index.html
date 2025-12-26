@@ -9,8 +9,6 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
   
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-
   <style>
     :root {
       --primary: #6366f1;
@@ -119,50 +117,22 @@
     }
     .price-value { font-size: 2em; font-weight: bold; }
     
-    /* Make by KBank Card Style */
-    .qr-card {
+    /* Image QR Style */
+    .qr-container {
+      text-align: center;
+      margin-bottom: 20px;
       background: white;
+      padding: 15px;
       border-radius: 16px;
-      overflow: hidden;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      max-width: 320px;
-      margin: 0 auto 20px;
-      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
-    .qr-header {
-      background: #103355; /* Make Blue */
-      padding: 15px;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
+    .qr-image {
+      width: 100%;
+      max-width: 280px; /* Limit size for aesthetics */
+      border-radius: 10px;
+      display: block;
+      margin: 0 auto;
     }
-    .qr-header img { height: 24px; }
-    .qr-header span { color: white; font-weight: 600; letter-spacing: 0.5px; }
-    
-    .qr-body {
-      padding: 25px;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    #qrcode {
-      padding: 10px;
-      background: white;
-      display: inline-block;
-    }
-    #qrcode img { margin: 0 auto; }
-    
-    .qr-footer {
-      padding: 15px;
-      text-align: center;
-      border-top: 1px dashed #e2e8f0;
-      background: #fcfcfc;
-    }
-    .account-name { font-size: 1.1em; font-weight: bold; color: #103355; margin-bottom: 4px; }
-    .account-id { color: #64748b; font-size: 0.9em; letter-spacing: 1px; }
 
     .cta-btn {
       display: block; width: 100%; padding: 14px;
@@ -219,21 +189,12 @@
 
       <div class="price-display">
         <div class="price-value" id="totalPrice">0.-</div>
-        <div style="font-size:0.9em; margin-top:5px; opacity:0.8;">(ยอดเงินล็อกใน QR แล้ว)</div>
+        <div style="font-size:0.9em; margin-top:5px; opacity:0.8;">(กรุณาระบุยอดตามนี้ตอนโอน)</div>
       </div>
 
-      <div class="qr-card">
-        <div class="qr-header">
-           <div style="background:white; padding:2px 5px; border-radius:4px; font-size:0.8em; color:#103355; font-weight:bold;">Thai QR Payment</div>
-        </div>
-        <div class="qr-body">
-           <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/PromptPay-logo.png" alt="PromptPay" style="height:25px; margin-bottom:15px;">
-           <div id="qrcode"></div>
-        </div>
-        <div class="qr-footer">
-          <div class="account-name">นาย สุทธิพงษ์ ประละคำ</div>
-          <div class="account-id">Make by KBank</div>
-        </div>
+      <div class="qr-container">
+        <img src="qr.jpg" alt="QR Code Payment" class="qr-image">
+        <div style="margin-top:10px; font-weight:600; color:#103355;">นาย สุทธิพงษ์ ประละคำ</div>
       </div>
 
       <button class="cta-btn" onclick="copyBookingDetails()">
@@ -252,10 +213,6 @@
   </div>
 
   <script>
-    // --- ⚠️ SETTINGS: ใส่เบอร์พร้อมเพย์ตรงนี้ ---
-    const PROMPTPAY_ID = "1509970065827"; // ✅ แก้ไขเป็นเลขบัตรปชช.ที่ให้มา
-    // ----------------------------------------
-
     // --- Snow Effect ---
     function createSnow() {
       const snowContainer = document.getElementById('snow');
@@ -285,59 +242,6 @@
 
     let editMode = false;
 
-    // --- PROMPTPAY GENERATOR (EMVCo) ---
-    function crc16(data) {
-        let crc = 0xFFFF;
-        for (let i = 0; i < data.length; i++) {
-            let x = ((crc >> 8) ^ data.charCodeAt(i)) & 0xFF;
-            x ^= x >> 4;
-            crc = ((crc << 8) ^ (x << 12) ^ (x << 5) ^ x) & 0xFFFF;
-        }
-        return ('0000' + crc.toString(16).toUpperCase()).slice(-4);
-    }
-
-    function generatePayload(target, amount) {
-        let targetSanitized = target.replace(/[^0-9]/g, '');
-        let targetType = targetSanitized.length >= 13 ? '13' : '11'; // 13=ID Card, 11=Phone(0066...)
-        if(targetType === '11') {
-            targetSanitized = '0066' + targetSanitized.substring(1); 
-        }
-
-        const f = (id, val) => id + ('00' + val.length).slice(-2) + val;
-        
-        let payload = [
-            f('00', '01'), // Format
-            f('01', amount ? '12' : '11'), // Dynamic/Static
-            f('29', [
-                f('00', 'A000000677010111'), // AID PromptPay
-                f('01', targetSanitized)
-            ].join('')),
-            f('58', 'TH'), // Country
-            f('53', '764'), // Currency THB
-        ];
-
-        if (amount) {
-            payload.push(f('54', parseFloat(amount).toFixed(2)));
-        }
-
-        let data = payload.join('') + '6304';
-        return data + crc16(data);
-    }
-
-    function updateQRCode(amount) {
-        const payload = generatePayload(PROMPTPAY_ID, amount);
-        const qrContainer = document.getElementById("qrcode");
-        qrContainer.innerHTML = ""; // Clear old
-        new QRCode(qrContainer, {
-            text: payload,
-            width: 180,
-            height: 180,
-            colorDark : "#000000",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.L
-        });
-    }
-
     // --- PRICING LOGIC ---
     function calculatePrice() {
         const dateSelect = document.getElementById('dateSelect');
@@ -365,9 +269,6 @@
         }
 
         document.getElementById('totalPrice').innerText = price.toLocaleString() + ".-";
-        
-        // Update QR
-        updateQRCode(price);
         
         return { price, note, dateText: selectedOption.text, serviceText: serviceSelect.options[serviceSelect.selectedIndex].text };
     }
